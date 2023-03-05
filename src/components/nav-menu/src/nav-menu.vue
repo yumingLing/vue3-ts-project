@@ -19,14 +19,23 @@
           <el-sub-menu :index="item.id + ''">
             <template #title>
               <!-- <i v-if="item.icon" :class="item.icon"></i> -->
-              <el-icon v-if="item.icon" :class="item.icon"></el-icon>
+              <el-icon v-if="item.icon" :class="item.icon">
+                <component :is="getIconComponentName(item.icon)"></component
+              ></el-icon>
               <span>{{ item.name }}</span>
             </template>
             <!-- 遍历里面的item -->
             <template v-for="subitem in item.children" :key="subitem.id">
-              <el-menu-item :index="subitem.id + ''">
+              <el-menu-item
+                :index="subitem.id + ''"
+                @click="handleMenuItemClick(subitem, item.children)"
+              >
                 <!-- <i v-if="subitem.icon" :class="subitem.icon"></i> -->
-                <el-icon v-if="subitem.icon" :class="subitem.icon"></el-icon>
+                <el-icon v-if="subitem.icon" :class="subitem.icon">
+                  <component
+                    :is="getIconComponentName(subitem.icon)"
+                  ></component>
+                </el-icon>
                 <span>{{ subitem.name }}</span>
               </el-menu-item>
             </template>
@@ -35,7 +44,9 @@
         <!-- 一级菜单 -->
         <template v-else-if="item.type === 2">
           <el-menu-item :index="item.id + ''">
-            <el-icon v-if="item.icon" :class="item.icon"></el-icon>
+            <el-icon v-if="item.icon" :class="item.icon">
+              <component :is="getIconComponentName(item.icon)"></component>
+            </el-icon>
 
             <span>{{ item.name }}</span>
           </el-menu-item>
@@ -48,7 +59,7 @@
 import { defineComponent, computed } from 'vue'
 // import {useStore} from 'vuex'
 import { useStore } from '@/store'
-
+import router from '@/router'
 // vuex - ts支持不好，store取值不能获取
 export default defineComponent({
   name: 'nav-menu',
@@ -420,7 +431,18 @@ export default defineComponent({
       const menu = store.state.login.userMenu
       return menu
     })
-    return { userMenus }
+    const getIconComponentName = computed(() => (iconClass: string) => {
+      const lastIndex = iconClass.lastIndexOf('-')
+      const names = iconClass.substring(lastIndex + 1, iconClass.length)
+      return names
+    })
+    const handleMenuItemClick = (item: any, g: any) => {
+      // console.log('--------', g)
+      router.push({
+        path: item.url ?? '/not-found'
+      })
+    }
+    return { userMenus, handleMenuItemClick, getIconComponentName }
   }
 })
 </script>

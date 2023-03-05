@@ -1,3 +1,4 @@
+import router from '@/router'
 import { Module } from 'vuex'
 import {
   accountLoginRequest,
@@ -5,8 +6,7 @@ import {
   requestUserMenusByRoleId
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
-import router from '@/router'
-
+import { mapMenusToRoutes } from '@/utils/map-menus'
 import type { IAccount } from '@/service/login/type'
 import type { ILoginState } from './type'
 import type { IRootState } from '../type'
@@ -31,6 +31,16 @@ const loginModule: Module<ILoginState, IRootState> = {
     },
     changeUserMenu(state, userMenu: any) {
       state.userMenu = userMenu
+
+      // 1.动态加载路由
+      // userMenus => routers
+      const routes = mapMenusToRoutes(userMenu)
+      console.log('添加 的路由', routes)
+
+      //2.注册所有的路由
+      routes.forEach((route) => {
+        router.addRoute('main', route)
+      })
     }
   },
   actions: {
