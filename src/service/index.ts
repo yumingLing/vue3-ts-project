@@ -9,6 +9,11 @@ const apiRequest = new APIRequest({
   intercetors: {
     requestInterceptor: (config) => {
       console.log('请求成功的拦截！')
+      // 设置token
+      const token = ''
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
       return config
     },
     requestInterceptorCatch: (error) => {
@@ -17,7 +22,8 @@ const apiRequest = new APIRequest({
     },
     responseIntercetor: (res) => {
       console.log('响应成功的拦截！')
-      return res
+      // 去掉axios封装的一些结构
+      return res.data
     },
     responseIntercetorCatch: (error) => {
       console.log('响应失败的拦截！')
