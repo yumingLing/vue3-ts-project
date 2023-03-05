@@ -1,7 +1,6 @@
-import { createStore } from 'vuex'
-import { IRootState } from './type'
+import { createStore, Store, useStore as useVuexStore } from 'vuex'
+import { IRootState, IStoreType } from './type'
 import login from './login/login'
-
 const store = createStore<IRootState>({
   state: {
     name: 'dd',
@@ -18,4 +17,8 @@ export function setupStore() {
   store.dispatch('login/loadLocalLogin')
 }
 
+// 封装可带ts属性的类型数据，可以准确获取数据，不易出错
+export function useStore(): Store<IStoreType> {
+  return useVuexStore()
+}
 export default store

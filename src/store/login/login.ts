@@ -26,10 +26,10 @@ const loginModule: Module<ILoginState, IRootState> = {
     changeToken(state, token: string) {
       state.token = token
     },
-    changeUerInfo(state, userInfo: any) {
+    changeUserInfo(state, userInfo: any) {
       state.userInfo = userInfo
     },
-    changeUerMenu(state, userMenu: any) {
+    changeUserMenu(state, userMenu: any) {
       state.userMenu = userMenu
     }
   },
@@ -45,15 +45,15 @@ const loginModule: Module<ILoginState, IRootState> = {
       // 2.请求用户信息
       const userInfoResult = await requestUserInfoById(id)
       const userInfo = userInfoResult.data
-      commit('changeUerInfo', userInfo)
+      commit('changeUserInfo', userInfo)
       localCache.setCache('userInfo', userInfo)
       console.log('请求用户信息 userInfoResult', userInfo)
 
       // 3.获取用户信息的菜单
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id)
       const userMenu = userMenusResult.data
-      commit('changeUerInfo', userMenu)
-      localCache.setCache('userInfo', userMenu)
+      commit('changeUserMenu', userMenu)
+      localCache.setCache('userMenu', userMenu)
       console.log('获取用户信息的菜单 ', userMenu)
 
       // 4.跳到首页
@@ -69,9 +69,9 @@ const loginModule: Module<ILoginState, IRootState> = {
       if (userInfo) {
         commit('changeUserInfo', userInfo)
       }
-      const userMenus = localCache.getCache('userMenus')
+      const userMenus = localCache.getCache('userMenu')
       if (userMenus) {
-        commit('changeUserMenus', userMenus)
+        commit('changeUserMenu', userMenus)
       }
     }
 
