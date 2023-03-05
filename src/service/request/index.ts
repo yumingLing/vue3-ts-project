@@ -33,7 +33,7 @@ class APIRequest {
     // 3.添加所有的实例都会拥有的拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('所有的拦截器都有的请求成功！', this.showLoading)
+        // console.log('所有的拦截器都有的请求成功！', this.showLoading)
         // 这里引入没有生效，去首页main.ts里面引用一下
         if (this.showLoading) {
           this.loading = ElLoading.service({
@@ -52,7 +52,7 @@ class APIRequest {
 
     this.instance.interceptors.response.use(
       (res) => {
-        console.log('所有的拦截器都有的响应成功！')
+        // console.log('所有的拦截器都有的响应成功！')
 
         this.loading?.close()
 
@@ -92,7 +92,6 @@ class APIRequest {
 
           // 2.2 将showLoading设置true, 这样不会影响下一个请求
           this.showLoading = DEAFULT_LOADING
-          console.log(res)
           // 3. 将结果数据进行返回
           resolve(res)
         })
