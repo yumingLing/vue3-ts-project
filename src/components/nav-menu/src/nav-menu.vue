@@ -5,7 +5,7 @@
       <span class="title" v-if="!collapse">VUE3+TS</span>
     </div>
     <el-menu
-      default-active="2"
+      :default-active="defaultValue"
       class="el-menu-vertical"
       background-color="#0c2135"
       text-color="#b7bdc3"
@@ -47,7 +47,6 @@
             <el-icon v-if="item.icon" :class="item.icon">
               <component :is="getIconComponentName(item.icon)"></component>
             </el-icon>
-
             <span>{{ item.name }}</span>
           </el-menu-item>
         </template>
@@ -56,10 +55,12 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, computed } from 'vue'
+import { defineComponent, computed, ref } from 'vue'
 // import {useStore} from 'vuex'
 import { useStore } from '@/store'
 import router from '@/router'
+import { useRoute } from 'vue-router'
+import { pathMapToMenu } from '@/utils/map-menus'
 // vuex - ts支持不好，store取值不能获取
 export default defineComponent({
   name: 'nav-menu',
@@ -431,6 +432,12 @@ export default defineComponent({
       const menu = store.state.login.userMenu
       return menu
     })
+
+    const route = useRoute()
+    const currentPath = route.path
+    const menu = pathMapToMenu(userMenus.value, currentPath)
+    const defaultValue = ref(menu.id + '')
+
     const getIconComponentName = computed(() => (iconClass: string) => {
       const lastIndex = iconClass.lastIndexOf('-')
       const names = iconClass.substring(lastIndex + 1, iconClass.length)
@@ -442,7 +449,12 @@ export default defineComponent({
         path: item.url ?? '/not-found'
       })
     }
-    return { userMenus, handleMenuItemClick, getIconComponentName }
+    return {
+      userMenus,
+      handleMenuItemClick,
+      getIconComponentName,
+      defaultValue
+    }
   }
 })
 </script>

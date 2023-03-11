@@ -20,9 +20,15 @@ registerApp(app)
 Object.keys(Elicons).forEach((key) => {
   app.component(key, Elicons[key as keyof typeof Elicons])
 })
-app.use(store).use(router).mount('#app')
-
+app.use(store)
+// router在刷新的时候，初始化会直接去加载浏览器的url，
+// 但是前置守卫的初始化动态路由还没初始化好，所以刷新的时候会找不到，解决问题就是初始化动态路由放前面
 setupStore()
+app.use(router)
+app.mount('#app')
+
+//这里刷新的话，放下面会404
+// setupStore()
 // 请求的使用示例，请求的类型
 // interface RequestDataType {
 //   data: any

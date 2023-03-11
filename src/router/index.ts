@@ -1,5 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import localCache from '@/utils/cache'
+import { firstMenu } from '@/utils/map-menus'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -11,12 +13,13 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/main',
+    name: 'main',
     component: () => import('@/views/main/main.vue'),
     children: [
-      {
-        path: '/login',
-        component: () => import('@/views/login/login.vue')
-      }
+      // {
+      //   path: '/login',
+      //   component: () => import('@/views/login/login.vue')
+      // }
     ]
     // children: [] -> 根据userMenus来决定 -> children
   },
@@ -37,10 +40,13 @@ router.beforeEach((to) => {
   if (to.path !== '/login') {
     const token = localCache.getCache('token')
     if (!token) {
-      console.log('没有登，跳转登页面')
-
       router.push('/login')
     }
+  }
+
+  // 首页进入重定向
+  if (to.path === '/main') {
+    return firstMenu.url
   }
 })
 

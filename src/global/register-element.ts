@@ -9,7 +9,7 @@ import {
   ElRadio
 } from 'element-plus'
 import { App } from 'vue'
-
+// 这个可以去掉了，element-plus支持自动导入了
 const components = [
   ElAlert,
   ElAside,

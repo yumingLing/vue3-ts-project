@@ -1,6 +1,7 @@
 import { createStore, Store, useStore as useVuexStore } from 'vuex'
 import { IRootState, IStoreType } from './type'
 import login from './login/login'
+import system from './main/system/system'
 const store = createStore<IRootState>({
   state: {
     name: 'dd',
@@ -9,7 +10,7 @@ const store = createStore<IRootState>({
   getters: {},
   mutations: {},
   actions: {},
-  modules: { login }
+  modules: { login, system }
 })
 
 // 由于vuex的数据是保存在内存里面的，所以 每次用户刷新页面都会把数据清空的

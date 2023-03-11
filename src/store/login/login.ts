@@ -6,7 +6,7 @@ import {
   requestUserMenusByRoleId
 } from '@/service/login/login'
 import localCache from '@/utils/cache'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { mapMenusToRoutes, mapMenusToPermissions } from '@/utils/map-menus'
 import type { IAccount } from '@/service/login/type'
 import type { ILoginState } from './type'
 import type { IRootState } from '../type'
@@ -18,7 +18,8 @@ const loginModule: Module<ILoginState, IRootState> = {
     return {
       token: '',
       userInfo: {},
-      userMenu: []
+      userMenu: [],
+      permissions: []
     }
   },
   getters: {},
@@ -32,15 +33,19 @@ const loginModule: Module<ILoginState, IRootState> = {
     changeUserMenu(state, userMenu: any) {
       state.userMenu = userMenu
 
-      // 1.动态加载路由
-      // userMenus => routers
-      const routes = mapMenusToRoutes(userMenu)
-      console.log('添加 的路由', routes)
+      console.log('注册动态路由')
 
-      //2.注册所有的路由
+      // userMenus => routes
+      const routes = mapMenusToRoutes(userMenu)
+
+      // 将routes => router.main.children
       routes.forEach((route) => {
         router.addRoute('main', route)
       })
+
+      // 获取用户按钮的权限
+      const permissions = mapMenusToPermissions(userMenu)
+      state.permissions = permissions
     }
   },
   actions: {
