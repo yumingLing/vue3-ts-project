@@ -1,5 +1,7 @@
 import { ILoginState } from './login/type'
 import { ISystemState } from './main/system/types'
+import { IDashboardState } from './main/analysis/types'
+
 export interface IRootState {
   name: string
   age: number
@@ -11,6 +13,7 @@ export interface IRootState {
 export interface IRootWithModule {
   login: ILoginState
   system: ISystemState
+  dashboard: IDashboardState
 }
 
 export type IStoreType = IRootState & IRootWithModule

@@ -6,6 +6,7 @@ import { getPageListData } from '@/service/main/system/system'
 
 import login from './login/login'
 import system from './main/system/system'
+import dashboard from './main/analysis/dashboard'
 
 const store = createStore<IRootState>({
   state: {
@@ -50,7 +51,7 @@ const store = createStore<IRootState>({
       commit('changeEntireMenu', menuList)
     }
   },
-  modules: { login, system }
+  modules: { login, system, dashboard }
 })
 
 // 由于vuex的数据是保存在内存里面的，所以 每次用户刷新页面都会把数据清空的
